@@ -1,4 +1,4 @@
-### ŠñeŽÒ {#contributors}
+### å¯„ç¨¿è€… {#contributors}
 
 Jim Manico
 
