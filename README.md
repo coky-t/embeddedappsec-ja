@@ -2,19 +2,19 @@
 
 This is the unofficial Japanese translation of the [Embedded Application Security Best Practices](https://github.com/scriptingxss/embeddedappsec).
 
-## ‘gž‚ÝƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒZƒLƒ…ƒŠƒeƒBƒxƒXƒgƒvƒ‰ƒNƒeƒBƒX “ú–{Œê”Å
+## çµ„è¾¼ã¿ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ãƒ™ã‚¹ãƒˆãƒ—ãƒ©ã‚¯ãƒ†ã‚£ã‚¹ æ—¥æœ¬èªžç‰ˆ
 
-* [‘gž‚ÝƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒxƒXƒgƒvƒ‰ƒNƒeƒBƒX](README.md)
-* [˜•¶](preface.md)
-* [ŠT—v](executive_summary/README.md)
-* [ƒoƒbƒtƒ@‚¨‚æ‚ÑƒXƒ^ƒbƒNƒI[ƒo[ƒtƒ[‚Ì•ÛŒì](executive_summary/1_buffer_and_stack_overflow_protection.md)
-* [ƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‚Ì–hŽ~] <!-- (executive_summary/2_injection_prevention.md) -->
-* [ƒtƒ@[ƒ€ƒEƒFƒAXV‚ÆˆÃ†‰»–¼] <!-- (executive_summary/3_firmware_updates_and_cryptographic_signatures.md) -->
-* [‹@–§î•ñ‚Ì•ÛŒì] <!-- (executive_summary/4_securing_sensitive_information.md) -->
-* [“¯ˆê«ŠÇ—] <!-- (executive_summary/5_identity_management.md) -->
-* [‘gž‚ÝƒtƒŒ[ƒ€ƒ[ƒN‚ÆCƒx[ƒXƒc[ƒ‹ƒ`ƒF[ƒ“‚ÌŒ˜˜S‰»] <!-- (executive_summary/6_embedded_framework_and_c-based_toolchain_hardeni.md) -->
-* [ƒfƒoƒbƒOƒR[ƒh‚ÆƒCƒ“ƒ^ƒtƒF[ƒX‚ÌŽg—p] <!-- (executive_summary/7_usage_of_debugging_code_and_interfaces.md) -->
-* [ƒgƒ‰ƒ“ƒXƒ|[ƒg‘wƒZƒLƒ…ƒŠƒeƒB(TLS)] <!-- (executive_summary/8_transport_layer_security.md) -->
-* [ƒf[ƒ^ŽûW‚Æ•ÛŠÇ‚ÌŽg—p - ƒvƒ‰ƒCƒoƒV[] <!-- (executive_summary/9_usage_of_data_collection_and_storage_-_privacy.md) -->
-* [ƒT[ƒhƒp[ƒeƒBƒR[ƒh‚ÆƒRƒ“ƒ|[ƒlƒ“ƒg] <!-- (executive_summary/10_third_party_code_and_components.md) -->
-* [‹ºˆÐƒ‚ƒfƒŠƒ“ƒO] <!-- (executive_summary/threat-model.md) -->
+* [çµ„è¾¼ã¿ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãƒ™ã‚¹ãƒˆãƒ—ãƒ©ã‚¯ãƒ†ã‚£ã‚¹](README.md)
+* [åºæ–‡](preface.md)
+* [æ¦‚è¦](executive_summary/README.md)
+* [ãƒãƒƒãƒ•ã‚¡ãŠã‚ˆã³ã‚¹ã‚¿ãƒƒã‚¯ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ã®ä¿è­·](executive_summary/1_buffer_and_stack_overflow_protection.md)
+* [ã‚¤ãƒ³ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ã®é˜²æ­¢](executive_summary/2_injection_prevention.md)
+* [ãƒ•ã‚¡ãƒ¼ãƒ ã‚¦ã‚§ã‚¢æ›´æ–°ã¨æš—å·åŒ–ç½²å] <!-- (executive_summary/3_firmware_updates_and_cryptographic_signatures.md) -->
+* [æ©Ÿå¯†æƒ…å ±ã®ä¿è­·] <!-- (executive_summary/4_securing_sensitive_information.md) -->
+* [åŒä¸€æ€§ç®¡ç†] <!-- (executive_summary/5_identity_management.md) -->
+* [çµ„è¾¼ã¿ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¯ãƒ¼ã‚¯ã¨Cãƒ™ãƒ¼ã‚¹ãƒ„ãƒ¼ãƒ«ãƒã‚§ãƒ¼ãƒ³ã®å …ç‰¢åŒ–] <!-- (executive_summary/6_embedded_framework_and_c-based_toolchain_hardeni.md) -->
+* [ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ¼ãƒ‰ã¨ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã®ä½¿ç”¨] <!-- (executive_summary/7_usage_of_debugging_code_and_interfaces.md) -->
+* [ãƒˆãƒ©ãƒ³ã‚¹ãƒãƒ¼ãƒˆå±¤ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£(TLS)] <!-- (executive_summary/8_transport_layer_security.md) -->
+* [ãƒ‡ãƒ¼ã‚¿åŽé›†ã¨ä¿ç®¡ã®ä½¿ç”¨ - ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼] <!-- (executive_summary/9_usage_of_data_collection_and_storage_-_privacy.md) -->
+* [ã‚µãƒ¼ãƒ‰ãƒ‘ãƒ¼ãƒ†ã‚£ã‚³ãƒ¼ãƒ‰ã¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ] <!-- (executive_summary/10_third_party_code_and_components.md) -->
+* [è„…å¨ãƒ¢ãƒ‡ãƒªãƒ³ã‚°] <!-- (executive_summary/threat-model.md) -->
