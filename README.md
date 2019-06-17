@@ -12,7 +12,7 @@ This is the unofficial Japanese translation of the [Embedded Application Securit
 * [ファームウェア更新と暗号化署名](executive_summary/3_firmware_updates_and_cryptographic_signatures.md)
 * [機密情報の保護](executive_summary/4_securing_sensitive_information.md)
 * [ID 管理](executive_summary/5_identity_management.md)
-* [組込みフレームワークとCベースツールチェーンの堅牢化] <!-- (executive_summary/6_embedded_framework_and_c-based_toolchain_hardeni.md) -->
+* [組込みフレームワークとCベースツールチェーンの堅牢化](executive_summary/6_embedded_framework_and_c-based_toolchain_hardeni.md)
 * [デバッグコードとインタフェースの使用](executive_summary/7_usage_of_debugging_code_and_interfaces.md)
 * [トランスポート層セキュリティ(TLS)](executive_summary/8_transport_layer_security.md)
 * [プライバシー - データ収集と保管の使用](executive_summary/9_usage_of_data_collection_and_storage_-_privacy.md)
