@@ -16,5 +16,5 @@ This is the unofficial Japanese translation of the [Embedded Application Securit
 * [デバッグコードとインタフェースの使用](executive_summary/7_usage_of_debugging_code_and_interfaces.md)
 * [トランスポート層セキュリティ(TLS)](executive_summary/8_transport_layer_security.md)
 * [プライバシー - データ収集と保管の使用](executive_summary/9_usage_of_data_collection_and_storage_-_privacy.md)
-* [サードパーティコードとコンポーネント] <!-- (executive_summary/10_third_party_code_and_components.md) -->
-* [脅威モデリング] <!-- (executive_summary/threat-model.md) -->
+* [サードパーティコードとコンポーネント](executive_summary/10_third_party_code_and_components.md)
+* [脅威モデリング](executive_summary/threat-model.md)
