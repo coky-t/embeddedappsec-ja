@@ -10,6 +10,6 @@
 * [組込みフレームワークとCベースツールチェーンの堅牢化](6_embedded_framework_and_c-based_toolchain_hardeni.md)
 * [デバッグコードとインタフェースの使用](7_usage_of_debugging_code_and_interfaces.md)
 * [トランスポート層セキュリティ(TLS)](8_transport_layer_security.md)
-* [プライバシー - データ収集と保管の使用](9_usage_of_data_collection_and_storage_-_privacy.md)
+* [データコレクションの使用と保管 - プライバシー](9_usage_of_data_collection_and_storage_-_privacy.md)
 * [サードパーティコードとコンポーネント](10_third_party_code_and_components.md)
 * [脅威モデリング](threat-model.md)
