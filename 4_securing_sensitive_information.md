@@ -1,4 +1,4 @@
-### 機密情報の保護 {#4-securing-sensitive-information}
+# 機密情報の保護
 
 パスワード、ユーザー名、トークン、秘密鍵などの機密情報をファームウェアリリースイメージにハードコードしてはいけません。これにはディスクに書き込まれる機密データの保管も含まれます。ハードウェアセキュリティエレメント (SE) や Trusted Execution Environment (TEE) が利用可能な場合は、そのような機能を機密データの保存に使用することを推奨します。もしくは、データを保護するために強力な暗号化の使用を評価すべきです。
 
@@ -167,7 +167,7 @@ new_secret = NULL;
 * 製品ライン間でパスワードをハードコードしてはいけません。
 * 保護されていない保管場所や EEPROM やフラッシュなどの外部ストレージに機密情報を格納してはいけません。
 
-#### その他の参考情報 {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
 * [https://cwe.mitre.org/data/definitions/259.html](https://cwe.mitre.org/data/definitions/259.html)
 * [https://cwe.mitre.org/data/definitions/798.html](https://cwe.mitre.org/data/definitions/798.html)
