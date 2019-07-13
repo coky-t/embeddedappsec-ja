@@ -1,4 +1,4 @@
-### 組込みフレームワークとCベースツールチェーンの堅牢化 {#6-embedded-framework-and-c-based-toolchain-hardening}
+# 組込みフレームワークとCベースツールチェーンの堅牢化
 
 BusyBox, 組込みフレームワーク, ツールチェーンをファームウェアビルドの構成時に使用されるライブラリおよび関数のみに制限します。Buildroot, Yocto などの組込み Linux ビルドシステムは通常このタスクを実行します。Telnet など既知のセキュアではないライブラリやプロトコルを削除することで、ファームウェアビルドにおける攻撃エントリポイントを最小限に抑えるだけでなく、潜在的なセキュリティ上の脅威を防ぐことに取り組み、ソフトウェアを構築するためのセキュアバイデザイン (secure-by-design) アプローチも提供します。
 
@@ -9,9 +9,13 @@ $ Configure darwin64-x86_64-cc -no-hw -no-engine -no-comp -no-shared -no-dso -no
 ```
 
 **一つのシェルを選択する例**: buildroot を使用して、以下のスクリーンショットでは bssh 一つだけのシェルが有効にされていることを示しています。 (注意: buildroot の例が以下に示されていますが、他の組込み Linux ビルドシステムにも同じ構成を達成するほかの方法があります。)
+
+
 ![](/assets/embedSec3.png)
 
-**サービスの堅牢化例**: 以下のスクリーンショットは openssh が有効であることを示していますが、FTP デーモンの proftpd と pure-ftpd は無効になっています。TLS を利用する場合にのみ FTP を有効にします。例えば、proftpd と pureftpd は TLS を使用するためにカスタムコンパイルを必要とします。 proftpd には mod_tls を使用し、pureftpd には `./configure --with-tls` を渡します。 ![](/assets/embedSec2.png)
+**サービスの堅牢化例**: 以下のスクリーンショットは openssh が有効であることを示していますが、FTP デーモンの proftpd と pure-ftpd は無効になっています。TLS を利用する場合にのみ FTP を有効にします。例えば、proftpd と pureftpd は TLS を使用するためにカスタムコンパイルを必要とします。 proftpd には mod_tls を使用し、pureftpd には `./configure --with-tls` を渡します。
+
+![](/assets/embedSec2.png)
 
 **U-boot の堅牢化例: ** 多くの場合、組込みデバイスへの物理的なアクセスにより攻撃パスがブートローダー設定を変更することを可能にします。以下では、 `uboot_config` のベストプラクティス設定例が提供されています。注意: `uboot_config` ファイルは一般的にビルド環境と特定のボードに応じて自動生成されます。
 
@@ -40,7 +44,7 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
 3. カーネルをどのようにパッケージ化、圧縮、署名したいかを記述した Image Tree Source (ITS) ファイルを作成します。
 4. RSA2048 で RSA 鍵ペアを作成し、認証に SHA256 ハッシュアルゴリズムを使用します。 (秘密鍵を安全な場所に保管します。ファームウェアにハードコードしてはいけません。)
 5. カーネルに署名します。
-6. ** 公開鍵 ** を U-Boot のイメージに入れます。
+6. **公開鍵** を U-Boot のイメージに入れます。
 7. U-Boot とカーネルをボードに入れます。
 8. イメージとブート設定をテストします。
 
@@ -156,19 +160,11 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
 | top | /bin/top | INCLUDE | EXCLUDE |
 | stbhotplug | /sbin/stbhotplug | INCLUDE | EXCLUDE |
 
-
-
-* 監査や提案を強化するために [Lynis](https://raw.githubusercontent.com/CISOfy/lynis/master/lynis) などのツールを利用します。
-
-  ```
-  *   wget --no-check-certificate https://github.com/CISOfy/lynis/archive/master.zip && unzip master.zip && cd lynis-master/ && bash lynis audit system
-  ```
-
+* 監査や提案を強化するために [Lynis](https://raw.githubusercontent.com/CISOfy/lynis/master/lynis) などのツールを利用します。 `wget --no-check-certificate https://github.com/CISOfy/lynis/archive/master.zip && unzip master.zip && cd lynis-master/ && bash lynis audit system`
   * `/var/log/lynis.log` のレポートをレビューします。
-
 * 組込みデバイスで実行されているソフトウェアについて、開発者および関係者との間で繰り返し脅威モデル演習を実行します。
 
-#### その他の参考情報 {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
 * [https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening](https://www.owasp.org/index.php/C-Based_Toolchain_Hardening)
 * [https://www.bulkorder.ftc.gov/system/files/publications/pdf0199-carefulconnections-buildingsecurityinternetofthings.pdf](https://www.bulkorder.ftc.gov/system/files/publications/pdf0199-carefulconnections-buildingsecurityinternetofthings.pdf)
