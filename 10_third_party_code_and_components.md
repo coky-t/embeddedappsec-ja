@@ -1,4 +1,4 @@
-### サードパーティコードとコンポーネント {#10-third-party-code-and-components}
+# サードパーティコードとコンポーネント
 
 ツールチェーンのセットアップ後は、カーネル、ソフトウェアパッケージ、サードパーティライブラリを確実に更新して、公にされている既知の脆弱性から保護することが重要です。Rompager などのソフトウェアや Buildroot などの組込みビルドツールは、更新が必要かどうかを判断するために脆弱性データベースや ChangeLog をチェックすべきです。組込みシステムを更新するとそれらのシステムの動作に問題が生じる可能性があるため、このプロセスはリリースビルドの前に開発者や QA チームによりテストされるべきであることに注意することが重要です。
 
@@ -19,26 +19,16 @@
 * Lua
   * `rockspec file` を参照します。
 * Java
-
   * `mvn dependency:tree`
   * `gradle app:dependencies`
-
 * Yocto
-
   * `buildhistory`
-
 * Buildroot (フリー)
-
   * `make legal-info`
-
 * パッケージマネージャ (フリー)
-
 * * `dpkg --list`
-
   * `rpm -qa`
-
   * `yum list`
-
   * `apt list --installed`
 * Javascript プロジェクトのための RetireJS (フリー)
 
@@ -115,16 +105,16 @@ cve_test は XUnit 形式の「単体テスト」のリストを含みます。�
 </testsuite>
 ```
 
-**Yocto 2.2 Morty 以降、ビルドインの **`cve-check`** **[**BitBake クラス**](https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/classes/cve-check.bbclass)** が公開 CVE に対してレシピを自動チェックするために追加されました。**
+**Yocto 2.2 Morty 以降、ビルドインの** `cve-check` ****[**BitBake クラス**](https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/classes/cve-check.bbclass) **が公開 CVE に対してレシピを自動チェックするために追加されました。**
 
 **TODO**
 
 **検討事項 (免責: 以下のリストは完全なものではありません):**
 
 * JavaScript ライブラリに [retire.js](https://github.com/RetireJS/retire.js) を使用します。
-  * NodeJS パッケージに [nsp](https://github.com/nodesecurity/nsp) を利用します。
+  * NodeJS パッケージに `npm audit` を利用します。
 * [OWASP DependencyCheck](https://github.com/jeremylong/DependencyCheck) を使用して、アプリケーションの [依存関係およびファイルの種類](https://jeremylong.github.io/DependencyCheck/analyzers/index.html) における一般に公開された脆弱性を検出します。
-* Lua 静的解析に [MoonshineLuaSec (MSL)](http://firmware.re/lua/msl.tar.gz) を使用します。
+* Python 関連パッケージの既知の脆弱性をスキャンするために [`safety check`](https://github.com/pyupio/safety) を使用します。
 * ウェブアプリケーションテストに [OWASP ZAP](https://github.com/zaproxy/zaproxy/wiki/Downloads) を使用します。
 * 基本的なカーネル監査と提案を強化するために [Lynis](https://raw.githubusercontent.com/CISOfy/lynis/master/lynis) などのツールを利用します。
   * `wget --no-check-certificate  https://github.com/CISOfy/lynis/archive/master.zip && unzip master.zip && cd lynis-master/ && bash lynis audit system`
@@ -137,7 +127,7 @@ cve_test は XUnit 形式の「単体テスト」のリストを含みます。�
 * ツールチェーン、ソフトウェアパッケージ、ライブラリの更新履歴を確認して、アップデートが必要かどうかを判断します。
 * Yocto や Buildroot などの組込みビルドシステムの実装が、含まれているすべてのパッケージのアップデートを可能にするようにセットアップされていることを確認します。
 
-#### その他の参考情報 {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
 * [https://www.kb.cert.org/vuls/id/922681](https://www.kb.cert.org/vuls/id/922681)
 * [https://www.kb.cert.org/vuls/id/561444](https://www.kb.cert.org/vuls/id/561444)
