@@ -1,5 +1,4 @@
-### トランスポート層セキュリティ(TLS) {#8-transport-layer-security}
-
+# トランスポート層セキュリティ(TLS)
 
 すべての通信手法が [TLS](https://www.securecoding.cert.org/confluence/display/c/API10-C.+APIs+should+have+security+options+enabled+by+default) の業界標準の暗号化設定利用していることを確認します。TLS を使用することで、すべてのデータは機密のままであり、転送中に改竄されないことを確実にします。組込みデバイスがドメイン名を使用する場合には [Let's Encrypt](https://letsencrypt.org/) などのフリーの認証局サービスを利用します。
 
@@ -144,7 +143,7 @@ TLS を利用するには、OpenSSL 以外の選択肢があります。非網�
 
 * [https://github.com/wolfSSL/wolfssl-examples](https://github.com/wolfSSL/wolfssl-examples)
 
-#### その他の参考情報 {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
 * [https://letsencrypt.org/](https://letsencrypt.org/)
 * [https://community.letsencrypt.org/t/certificate-for-embedded-device-without-a-domain-name/2372](https://community.letsencrypt.org/t/certificate-for-embedded-device-without-a-domain-name/2372)
