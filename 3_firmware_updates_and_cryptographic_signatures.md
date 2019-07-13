@@ -90,7 +90,7 @@ Primary key fingerprint: 647F 2865 4894 E3BD 4571  99BE 38DB BDC8 6092 693E
 
 
 
-#### その他の参考情報 {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
 * [https://www.kernel.org/signature.html](https://www.kernel.org/signature.html)
 * [https://www.owasp.org/index.php/Key\_Management\_Cheat\_Sheet](https://www.owasp.org/index.php/Key_Management_Cheat_Sheet)
