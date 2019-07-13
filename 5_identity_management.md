@@ -1,4 +1,4 @@
-### ID 管理 {#5-identity-management}
+# ID 管理
 
 組込みデバイス内のユーザーアカウントは本質的に静的であってはいけません。内部ウェブ管理、内部コンソールアクセス、リモートウェブ管理、リモートコンソールアクセスのためのユーザーアカウントの分離を可能にする機能は自動化された悪意のある攻撃を防ぐために利用可能であるべきです。
 
@@ -19,21 +19,17 @@
   * セッション ID はランダムであり、セッション間で変更されていることを確認します。
 * ユーザー名、パスワード、セッション ID を含むクッキーはセキュアではないプロトコル (HTTP, FTP, Telnet など) で送信されないことを確認します。
 * パスワードの複雑さのポリシーは "Password1" など簡単に推測できるパスワードを阻止するために強制されるべきです。複雑なパスワードは以下の属性を持つべきです。
-
   * 少なくとも 10 文字以上の長さ
-
   * 少なくとも 1 つの大文字
-
   * 少なくとも 1 つの数字
-
   * 少なくとも 1 つの小文字
-
   * 少なくとも 1 つの記号
-
 * EEPROM は複雑さの要件を満たすパスワードで保護されていることを確認します。
+* 鍵と証明書のローテーションポリシーを採用する。
 
-#### その他の参考情報Additional References {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
+* [NIST Special Publication 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html)
 * [FTC Charges D-Link Put Consumers' Privacy at Risk Due to the Inadequate Security of Its Computer Routers and Cameras](https://www.ftc.gov/news-events/press-releases/2017/01/ftc-charges-d-link-put-consumers-privacy-risk-due-inadequate)
 * [https://www.owasp.org/index.php/Testing_Identity_Management](https://www.owasp.org/index.php/Testing_Identity_Management)
 * [https://www.owasp.org/images/6/67/OWASPApplicationSecurityVerificationStandard3.0.pdf](https://www.owasp.org/images/6/67/OWASPApplicationSecurityVerificationStandard3.0.pdf) (Page 26-31)
