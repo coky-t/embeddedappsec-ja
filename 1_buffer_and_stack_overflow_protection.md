@@ -1,44 +1,46 @@
-### **バッファおよびスタックオーバーフローの保護** {#1-buffer-and-stack-overflow-protection}
+# バッファおよびスタックオーバーフローの保護
 
 ファームウェア内のメモリ破損の脆弱性から保護するために、既知の危険な関数や API の使用を防止します。( 例 [安全でない C 関数](https://www.securecoding.cert.org/confluence/display/c/VOID+MSC34-C.+Do+not+use+deprecated+and+obsolete+functions) の使用 - [strcat, strcpy, sprintf, scanf](http://cwe.mitre.org/data/definitions/676.html#Demonstrative_Examples) )。バッファオーバーフローなどのメモリ破損の脆弱性はスタックのオーバーフロー ( [スタックオーバーフロー](https://en.wikipedia.org/wiki/Stack_buffer_overflow) ) やヒープのオーバーフロー ( [ヒープオーバーフロー](https://en.wikipedia.org/wiki/Heap_overflow) ) からなります。わかりやすくするために、本書ではこの二種類の脆弱性を区別しません。バッファオーバーフローが検出され、攻撃者により悪用された場合、命令ポインタレジスタは上書きされ、攻撃者により提供された任意の悪質なコードが実行されます。
 
 **ソースコードの脆弱な C 関数を見つけます。例： "C" リポジトリ内で下記の "find" コマンドを使用して、ソースコードの "strncpy" や "strlen" などの脆弱な C 関数を見つけます。**
 
-```
+```text
 find . -type f -name '*.c' -print0|xargs -0 grep -e 'strncpy.*strlen'|wc -l
 ```
 
 **また grep 式は以下の式のように利用できます。**
 
-    $ grep -E '(strcpy|strcat|strncat|sprintf|strlen|memcpy|fopen|gets)' fuzzgoat.c
-       memcpy (&state.settings, settings, sizeof (json_settings));
-                {  sprintf (error, "Unexpected EOF in string (at %d:%d)", line_and_col);
+```text
+$ grep -E '(strcpy|strcat|strncat|sprintf|strlen|memcpy|fopen|gets)' fuzzgoat.c
+   memcpy (&state.settings, settings, sizeof (json_settings));
+            {  sprintf (error, "Unexpected EOF in string (at %d:%d)", line_and_col);
+                        sprintf (error, "Invalid character value `%c` (at %d:%d)", b, line_and_col);
                             sprintf (error, "Invalid character value `%c` (at %d:%d)", b, line_and_col);
-                                sprintf (error, "Invalid character value `%c` (at %d:%d)", b, line_and_col);
-                      {  sprintf (error, "%d:%d: Unexpected EOF in block comment", line_and_col);
-                   {  sprintf (error, "%d:%d: Comment not allowed here", line_and_col);
-                   {  sprintf (error, "%d:%d: EOF unexpected", line_and_col);
-                         sprintf (error, "%d:%d: Unexpected `%c` in comment opening sequence", line_and_col, b);
-                      sprintf (error, "%d:%d: Trailing garbage: `%c`",
-                      {  sprintf (error, "%d:%d: Unexpected ]", line_and_col);
-                            sprintf (error, "%d:%d: Expected , before %c",
-                            sprintf (error, "%d:%d: Expected : before %c",
-                            {  sprintf (error, "%d:%d: Unexpected %c when seeking value", line_and_col, b);
-                         {  sprintf (error, "%d:%d: Expected , before \"", line_and_col);
-                         sprintf (error, "%d:%d: Unexpected `%c` in object", line_and_col, b);
-                            {  sprintf (error, "%d:%d: Unexpected `0` before `%c`", line_and_col, b);
-                      {  sprintf (error, "%d:%d: Expected digit before `.`", line_and_col);
-                         {  sprintf (error, "%d:%d: Expected digit after `.`", line_and_col);
-                      {  sprintf (error, "%d:%d: Expected digit after `e`", line_and_col);
-       sprintf (error, "%d:%d: Unknown value", line_and_col);
-       strcpy (error, "Memory allocation failure");
-       sprintf (error, "%d:%d: Too long (caught overflow)", line_and_col);
-             strcpy (error_buf, error);
-             strcpy (error_buf, "Unknown error");
+                  {  sprintf (error, "%d:%d: Unexpected EOF in block comment", line_and_col);
+               {  sprintf (error, "%d:%d: Comment not allowed here", line_and_col);
+               {  sprintf (error, "%d:%d: EOF unexpected", line_and_col);
+                     sprintf (error, "%d:%d: Unexpected `%c` in comment opening sequence", line_and_col, b);
+                  sprintf (error, "%d:%d: Trailing garbage: `%c`",
+                  {  sprintf (error, "%d:%d: Unexpected ]", line_and_col);
+                        sprintf (error, "%d:%d: Expected , before %c",
+                        sprintf (error, "%d:%d: Expected : before %c",
+                        {  sprintf (error, "%d:%d: Unexpected %c when seeking value", line_and_col, b);
+                     {  sprintf (error, "%d:%d: Expected , before \"", line_and_col);
+                     sprintf (error, "%d:%d: Unexpected `%c` in object", line_and_col, b);
+                        {  sprintf (error, "%d:%d: Unexpected `0` before `%c`", line_and_col, b);
+                  {  sprintf (error, "%d:%d: Expected digit before `.`", line_and_col);
+                     {  sprintf (error, "%d:%d: Expected digit after `.`", line_and_col);
+                  {  sprintf (error, "%d:%d: Expected digit after `e`", line_and_col);
+   sprintf (error, "%d:%d: Unknown value", line_and_col);
+   strcpy (error, "Memory allocation failure");
+   sprintf (error, "%d:%d: Too long (caught overflow)", line_and_col);
+         strcpy (error_buf, error);
+         strcpy (error_buf, "Unknown error");
+```
 
 **以下に、C ソースコードに対して実行した flawfinder の出力例を示します。**
 
-```
+```text
 $ flawfinder fuzzgoat.c 
 Flawfinder version 1.31, (C) 2001-2014 David A. Wheeler.
 Number of rules (primarily dangerous function names) in C/C++ ruleset: 169
@@ -167,11 +169,12 @@ strncat( buffer, SOME_DATA, strlen( SOME_DATA ));
 * 安全な同等物がない関数は書き直して安全なチェックを実装する必要があります。
 * FreeRTOS OS を利用する場合は、開発およびテストフェーズではフック関数で "configCHECK_FOR_STACK_OVERFLOW" に "1" を設定し、製品ビルドでは削除することを検討します。
 
-#### その他の参考情報 {#additional-references}
+## その他の参考情報 <a id="additional-references"></a>
 
 * OSS (オープンソースソフトウェア) 静的解析ツール
   * C 用 [flawfinder](http://www.dwheeler.com/flawfinder/) および [PMD](https://pmd.github.io/) の使用
   * [C++](https://github.com/struct/mms/blob/master/Modern_Memory_Safety_In_C_CPP.pdf) 用 [cppcheck](http://cppcheck.sourceforge.net/) の使用
+  * Clang Static Analysis を使用した C, C++, iOS 用の [Codechecker](https://github.com/Ericsson/codechecker) および [Infer](https://fbinfer.com/) の検討
 * [http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/library-c.html](http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/library-c.html)
 * [https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening\#GCC.2FBinutils](https://www.owasp.org/index.php/C-Based_Toolchain_Hardening#GCC.2FBinutils)
 * [https://www.owasp.org/index.php/Buffer\_overflow\_attack](https://www.owasp.org/index.php/Buffer_overflow_attack)
