@@ -1,4 +1,4 @@
-### インジェクションの防止 {#2-injection-prevention}
+# インジェクションの防止
 
 意図しないシステム実行を防止するために、すべての信頼できないデータとユーザー入力が妥当性検証、サニタイズ、出力エンコードされていることを確認します。オペレーティングシステム (OS) コマンドインジェクション、クロスサイトスクリプティング (JavaScript インジェクションなど) 、SQL インジェクション、XPath インジェクションなどのさまざまなインジェクション攻撃がアプリケーションセキュリティ内に存在します。しかし、組込みソフトウェア内のインジェクション攻撃の中で最もよくあるものは OS コマンドインジェクションに関するものです。アプリケーションが信頼できない入力やセキュアではない入力を受け入れ、それを妥当性検証や適切なエスケープなしで外部アプリケーションに (アプリケーション名自体または引数として) 渡します。
 
@@ -83,35 +83,28 @@ void func(char *input) {
 }
 ```
 
-# 
-
 **検討事項:**
 
 * シェルコマンドラッパーを起動してはいけません。これは以下に限定されません。
-  * PHP:`system()` `exec()`
-  * C:`system()`
+  * PHP:`system()` `exec()`, `passthru()`, `shell_exec()`
+  * C:`system() popen()`, `exec()`, `execl()`, `execle()`, `execv()`, `execve()`
   * C++:`ShellExecute()` 
   * Lua:`os.execute()`
-  * Perl:`system()` `exec()`
+  * Perl:`system()`, `exec()`
   * Python:`os.system()` `subprocess.call()`
 * 可能であれば、オペレーションシステムコマンドにユーザーデータを使用することは避けます。
   * 必要に応じて、オペレーティングシステムに渡される可能性のあるユーザー駆動文字列に番号とコマンド文字列の参照マップを使用します。
 * ホワイトリストは参照マップを介したコマンドを許可することで、期待されるパラメータ値のみが処理されることを保証します。
 * エンコード文字のユーザーデータをコンテキストに合わせて出力することを保証します。 (例、 HTML, JavaScript, CSS, など)
-
-  * HTML エンティティエンコード
-
+  * HTML エンティティエンコーディング
     * &lt; は以下のようにエンコードして出力します。
-
-      * ```
+      * ```text
         &lt;
         ```
-
     * &gt; は以下のようにエンコードして出力します。
-
       * `&gt;`
 
-#### その他の参考情報: {#additional-references}
+## その他の参考情報: <a id="additional-references"></a>
 
 * [Multiple Netgear routers are vulnerable to arbitrary command injection](https://www.kb.cert.org/vuls/id/582384)
 * [FTC Charges D-Link Put Consumers’ Privacy at Risk Due to the Inadequate Security of Its Computer Routers and Cameras](https://www.ftc.gov/news-events/press-releases/2017/01/ftc-charges-d-link-put-consumers-privacy-risk-due-inadequate)
