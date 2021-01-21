@@ -2,6 +2,13 @@
 
 This is the unofficial Japanese translation of the [Embedded Application Security Best Practices](https://github.com/scriptingxss/embeddedappsec).
 
+### Originator
+
+- Project Site - <https://owasp.org/www-project-embedded-application-security/>
+- Project Repository - <https://github.com/OWASP/www-project-embedded-application-security>
+- Document Site - <https://scriptingxss.gitbook.io/embedded-appsec-best-practices/>
+- Document Repository - <https://github.com/scriptingxss/embeddedappsec>
+
 ## 組込みアプリケーションセキュリティベストプラクティス 日本語版
 
 * [組込みアプリケーションベストプラクティス](README.md)
