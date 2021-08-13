@@ -24,3 +24,11 @@ This is the unofficial Japanese translation of the [Embedded Application Securit
 * [データコレクションの使用と保管 - プライバシー](9_usage_of_data_collection_and_storage_-_privacy.md)
 * [サードパーティコードとコンポーネント](10_third_party_code_and_components.md)
 * [脅威モデリング](threat-model.md)
+
+## License
+
+[Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+
+## Author (日本語訳)
+
+[Koki Takeyama](https://github.com/coky-t)
