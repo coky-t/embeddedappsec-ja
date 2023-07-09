@@ -26,7 +26,8 @@
 * Buildroot (フリー)
   * `make legal-info`
 * パッケージマネージャ (フリー)
-* * `dpkg --list`
+*
+  * `dpkg --list`
   * `rpm -qa`
   * `yum list`
   * `apt list --installed`
@@ -34,10 +35,10 @@
 
 **BOM の例を以下に示します:**
 
-| **Component** | Version | Vulnerabilities - CVEs | Notes |
-| :--- | :--- | :--- | :--- |
-| jQuery | 1.4.4 | CVE-2011-4969 |  |
-| libxml2 | 2.9.4 | CVE-2016-5131 | To be fixed |
+| **Component** | Version | Vulnerabilities - CVEs | Notes       |
+| ------------- | ------- | ---------------------- | ----------- |
+| jQuery        | 1.4.4   | CVE-2011-4969          |             |
+| libxml2       | 2.9.4   | CVE-2016-5131          | To be fixed |
 
 ソフトウェア BOM にはコンポーネントの機能や特定のバージョンを使用することの正当性に関するライセンスおよび文脈情報も含んでいます。
 
@@ -59,55 +60,13 @@ Loading from cache: https://raw.githubusercontent.com/RetireJS/retire.js/master/
  ↳ moment.js 2.10.6 has known vulnerabilities: severity: low; summary: reDOS - regular expression denial of service; https://github.com/moment/moment/issues/2936
 ```
 
-**LibScanner の利用例:**
 
-最新の NVD xml DB をダウンロードします。
-
-```bash
-# ./download_xml.sh
-
-...
-...
---2017-02-20 14:57:57--  https://nvd.nist.gov/download/nvdcve-2017.xml.gz
-Resolving nvd.nist.gov (nvd.nist.gov)... 129.6.13.177, 2610:20:6005:13::177
-Connecting to nvd.nist.gov (nvd.nist.gov)|129.6.13.177|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 68023 (66K) [application/x-gzip]
-Saving to: ‘nvdcve-2017.xml.gz’
-
-nvdcve-2017.xml.gz  100%[===================>]  66.43K   389KB/s    in 0.2s…
-```
 
 yocto ビルドから installed-packages.txt を見つけます。詳細については次を参照します: [http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html\#understanding-what-the-build-history-contains](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html#understanding-what-the-build-history-contains)
 
-発見された CVE を視覚的に表現するには installed-packages.txt の内容を [http://devicevulnerabilitychecker.com](http://devicevulnerabilitychecker.com) に貼り付けて、CI システムの一部として統合します。 (下記参照)
+**Yocto 2.2 Morty 以降、ビルドインの** `cve-check` [**BitBake クラス**](https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/classes/cve-check.bbclass) **がビルド時に公開 CVE に対してレシピを自動チェックするために追加されました。詳細については次の Yocto ページを参照してください。** [**https://docs.yoctoproject.org/dev/dev-manual/vulnerabilities.html**](https://docs.yoctoproject.org/dev/dev-manual/vulnerabilities.html)
 
-installed-packages.txt でスキャナを実行します。
 
-```bash
-# ./cli.py  --format yocto "path/to/installed-packages.txt" dbs/  > cve_test.xml
-```
-
-cve_test は XUnit 形式の「単体テスト」のリストを含みます。すべての cve に対して失敗するため、無視されません。
-
-```bash
-# tail cve_test.xml
-
-<failure> Medium (6.8) - Use-after-free vulnerability in libxml2 through 2.9.4, as used in Google Chrome before 52.0.2743.82, allows remote attackers to cause a denial of service or possibly have unspecified other impact via vectors related to the XPointer range-to function. 
-
- CVE Published on: 2016-07-23 https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2016-5131 </failure>
-</testcase>
-<testcase id="CVE-2016-9318" name="CVE-2016-9318" classname="libxml2 - 2.9.4" time="0">
-<failure> Medium (6.8) - libxml2 2.9.4 and earlier, as used in XMLSec 1.2.23 and earlier and other products, does not offer a flag directly indicating that the current document may be read but other files may not be opened, which makes it easier for remote attackers to conduct XML External Entity (XXE) attacks via a crafted document. 
-
- CVE Published on: 2016-11-15 https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2016-9318 </failure>
-</testcase>
-</testsuite>
-```
-
-**Yocto 2.2 Morty 以降、ビルドインの** `cve-check` ****[**BitBake クラス**](https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/classes/cve-check.bbclass) **が公開 CVE に対してレシピを自動チェックするために追加されました。**
-
-**TODO**
 
 **検討事項 (免責: 以下のリストは完全なものではありません):**
 
@@ -127,12 +86,12 @@ cve_test は XUnit 形式の「単体テスト」のリストを含みます。�
 * ツールチェーン、ソフトウェアパッケージ、ライブラリの更新履歴を確認して、アップデートが必要かどうかを判断します。
 * Yocto や Buildroot などの組込みビルドシステムの実装が、含まれているすべてのパッケージのアップデートを可能にするようにセットアップされていることを確認します。
 
-## その他の参考情報 <a id="additional-references"></a>
+## その他の参考情報 <a href="#additional-references" id="additional-references"></a>
 
 * [https://www.kb.cert.org/vuls/id/922681](https://www.kb.cert.org/vuls/id/922681)
 * [https://www.kb.cert.org/vuls/id/561444](https://www.kb.cert.org/vuls/id/561444)
-* [https://buildroot.org/downloads/manual/manual.html\#faq-no-binary-packages](https://buildroot.org/downloads/manual/manual.html#faq-no-binary-packages)
+* [https://buildroot.org/downloads/manual/manual.html#faq-no-binary-packages](https://buildroot.org/downloads/manual/manual.html#faq-no-binary-packages)
 * [https://wiki.yoctoproject.org/wiki/Security](https://wiki.yoctoproject.org/wiki/Security)
 * [https://nvd.nist.gov/](https://nvd.nist.gov/)
 * [https://www.openhub.net/](https://www.openhub.net/)
-* [Improving Your Embedded Linux Security Posture with Yocto](https://legacy.gitbook.com/book/scriptingxss/embedded-appsec-best-practices/edit#)
+* [Improving Your Embedded Linux Security Posture with Yocto](https://legacy.gitbook.com/book/scriptingxss/embedded-appsec-best-practices/edit)
