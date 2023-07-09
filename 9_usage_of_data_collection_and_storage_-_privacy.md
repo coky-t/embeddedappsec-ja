@@ -10,9 +10,9 @@
 * プライバシーポリシーによりどの情報が収集、保管、配布されているかについての詳細を含めて、顧客に透明性を提供します。
 * デバイスの所有者が他のユーザーへの移転や破棄の前に個人データを削除するために工場出荷状態へのリセットを実行できるようにするメカニズムを提供します。
 * EU 内でデータを保管するデバイスに対して GDPR をを考慮します。
-  * "[それは名前、写真、電子メールアドレス、銀行明細、ソーシャルネットワークのウェブサイトへの投稿、医療情報、コンピュータの IP アドレスのいずれも該当します。"](https://www.eugdpr.org/gdpr-faqs.html)
+  * "..[収集、保存、送信、分析など、データでできるあらゆることをカバーします。「個人データ」とは名前、電子メールアドレス、IP アドレス、目の色、政治的信条など、個人に関連する情報です。"](https://gdpr.eu/faq/)
 
-## その他の参考情報 <a id="additional-references"></a>
+## その他の参考情報 <a href="#additional-references" id="additional-references"></a>
 
 * [Privacy-by-design](https://www.ftc.gov/system/files/documents/reports/federal-trade-commission-staff-report-november-2013-workshop-entitled-internet-things-privacy/150127iotrpt.pdf)
 * [https://ico.org.uk/for-organisations/guide-to-data-protection/privacy-by-design/](https://ico.org.uk/for-organisations/guide-to-data-protection/privacy-by-design/)
