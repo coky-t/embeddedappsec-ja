@@ -1,25 +1,25 @@
-# 組込みフレームワークとCベースツールチェーンの堅牢化
+# Embedded Framework and C-Based Toolchain Hardening
 
-BusyBox, 組込みフレームワーク, ツールチェーンをファームウェアビルドの構成時に使用されるライブラリおよび関数のみに制限します。Buildroot, Yocto などの組込み Linux ビルドシステムは通常このタスクを実行します。Telnet など既知のセキュアではないライブラリやプロトコルを削除することで、ファームウェアビルドにおける攻撃エントリポイントを最小限に抑えるだけでなく、潜在的なセキュリティ上の脅威を防ぐことに取り組み、ソフトウェアを構築するためのセキュアバイデザイン (secure-by-design) アプローチも提供します。
+Limit BusyBox, embedded frameworks, and toolchains to only those libraries and functions being used when configuring firmware builds. Embedded Linux build systems such as Buildroot, Yocto and others typically perform this task. Removal of known insecure libraries and protocols such as Telnet not only minimize attack entry points in firmware builds, but also provide a secure-by-design approach to building software in efforts to thwart potential security threats.
 
-**ライブラリの堅牢化** [**例**](https://www.owasp.org/index.php/C-Based_Toolchain_Hardening)**:** [圧縮はセキュアではありません](http://arstechnica.com/security/2012/09/crime-hijacks-https-sessions/) (特に), [SSLv2 はセキュアではありません](http://www.schneier.com/paper-ssl-revised.pdf), [SSLv3 はセキュアではありません](http://www.yaksman.org/~lweith/ssl.pdf), また TLS の初期バージョンも同様であることが知られています。さらに、ハードウェアやエンジンを使用せず、静的リンクのみを許可するとします。知識と仕様を考慮して、OpenSSL ライブラリを以下のように構築します。
+**Hardening a library** [**Example**](https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening)**:** It is known that [compression is insecure](http://arstechnica.com/security/2012/09/crime-hijacks-https-sessions/) (amongst others),[SSLv2 is insecure](http://www.schneier.com/paper-ssl-revised.pdf), [SSLv3 is insecure](http://www.yaksman.org/\~lweith/ssl.pdf), as well as early versions of TLS . In addition, suppose you don't use hardware and engines, and only allow static linking. Given the knowledge and specifications, you would configure the OpenSSL library as follows:
 
 ```bash
 $ Configure darwin64-x86_64-cc -no-hw -no-engine -no-comp -no-shared -no-dso -no-ssl2 -no-ssl3 --openssldir=
 ```
 
-**一つのシェルを選択する例**: buildroot を使用して、以下のスクリーンショットでは bssh 一つだけのシェルが有効にされていることを示しています。 (注意: buildroot の例が以下に示されていますが、他の組込み Linux ビルドシステムにも同じ構成を達成するほかの方法があります。)
+**Selecting one shell Example**: Utilizing buildroot, the screenshot below demonstrates only one Shell being enabled, bash. (_Note: Buildroot examples are shown below but there are other ways to accomplish the same configuration with other embedded Linux build systems._)\
 
 
-![](/assets/embedSec3.png)
+![](.gitbook/assets/embedSec3.png)
 
-**サービスの堅牢化例**: 以下のスクリーンショットは openssh が有効であることを示していますが、FTP デーモンの proftpd と pure-ftpd は無効になっています。TLS を利用する場合にのみ FTP を有効にします。例えば、proftpd と pureftpd は TLS を使用するためにカスタムコンパイルを必要とします。 proftpd には mod_tls を使用し、pureftpd には `./configure --with-tls` を渡します。
+**Hardening Services Example**: The screenshot below shows openssh enabled but not FTP daemons proftpd and pure-ftpd. Only enable FTP if TLS is to be utilized. For example, proftpd and pureftpd require custom compilation to use TLS with mod\_tls for proftpd and passing `./configure --with-tls` for pureftpd.
 
-![](/assets/embedSec2.png)
+![](.gitbook/assets/embedSec2.png)
 
-**U-boot の堅牢化例: ** 多くの場合、組込みデバイスへの物理的なアクセスにより攻撃パスがブートローダー設定を変更することを可能にします。以下では、 `uboot_config` のベストプラクティス設定例が提供されています。注意: `uboot_config` ファイルは一般的にビルド環境と特定のボードに応じて自動生成されます。
+**Hardening Das U-boot Example:** Often, physical access to an embedded device enables attack paths to modify bootloader configurations. Below, example best practice configurations for `uboot_config` are provided_. Note: The_ `uboot_config` _file is typically auto generated depending on the build environment and specific board._&#x20;
 
-U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブート) を設定します。 Verified Boot はデフォルトでは有効になっておらず、少なくとも以下の構成でのボードサポートが必要です。
+Configure "Verified Boot" (secure boot) for U-Boot 2013.07 versions and above. Verified Boot is not enabled by default and requires board support with the below configurations required at the minimum.
 
 `CONFIG_ENABLE_VBOOT=y #Enables Verified Boot`
 
@@ -37,18 +37,18 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
 
 `CONFIG_DEFAULT_DEVICE_TREE=y #Specifies the default Device Tree used for the run-time configuration of U-Boot.`
 
-それから、Verified Boot を構成するために一連の手順が必要になります。[Beaglebone black ボード用の Verified Boot](https://github.com/siemens/u-boot/blob/master/doc/uImage.FIT/beaglebone_vboot.txt) 構築の概要例は以下の通りです。
+Afterwards, a series of steps are needed for configuring Verified Boot. An example overview of building [Verified Boot for a Beaglebone black board](https://github.com/siemens/u-boot/blob/master/doc/uImage.FIT/beaglebone\_vboot.txt) is:
 
-1. Verified Boot オプションを有効にして、ボードの U-Boot を構築します。
-2. 適切な Linux カーネル (できれば最新のもの) を入手します。
-3. カーネルをどのようにパッケージ化、圧縮、署名したいかを記述した Image Tree Source (ITS) ファイルを作成します。
-4. RSA2048 で RSA 鍵ペアを作成し、認証に SHA256 ハッシュアルゴリズムを使用します。 (秘密鍵を安全な場所に保管します。ファームウェアにハードコードしてはいけません。)
-5. カーネルに署名します。
-6. **公開鍵** を U-Boot のイメージに入れます。
-7. U-Boot とカーネルをボードに入れます。
-8. イメージとブート設定をテストします。
+1. Build U-Boot for the board, with the verified boot options enabled.
+2. Obtain a suitable Linux kernel (preferably the latest)
+3. Create a Image Tree Source file (ITS) file describing how you want the kernel to be packaged, compressed and signed.
+4. Create an RSA key pair with RSA2048 and use SHA256 hashing algorithm for authentication (**store your private key in a safe place and not hardcoded into firmware**)
+5. Sign the kernel
+6. Put the **public key** into U-Boot's image
+7. Put U-Boot and the kernel onto the board
+8. Test the image and boot configurations
 
-上記に加えて、適切な構成を組込みデバイスのコンテキストに合わせて有効にします。以下は注目すべき構成です。
+In addition to the above, make the applicable configurations valid to the context of your embedded device. Below are notable configurations that can be made.
 
 `CONFIG_BOOTDELAY -2. #Prevents access to u-boot's console when auto boot is used`
 
@@ -62,7 +62,7 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
 
 `CONFIG_USB_HOST_ETHER: enables USB ethernet adapter support`
 
-以下の構成マクロで U-Boot のシリアルコンソール出力を無効にします。
+Disabling serial console output in U-Boot via the following configuration macros:
 
 `CONFIG_SILENT_CONSOLE`
 
@@ -70,7 +70,7 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
 
 `CONFIG_SILENT_CONSOLE_UPDATE_ON_RELOC`
 
-不変 (immutable) の U-Boot 環境編集を有効にして許可されていない変更 (bootargs の変更、Verified Boot 公開鍵の更新など) やファームウェアのサイドローディングを防止するには、以下のように不揮発性メモリ設定を削除します。
+To enable immutable U-boot environment variables to prevent unauthorized changes (e.g. Modifying bootargs, updating verified boot public keys etc.) or side-loading of firmware, remove non-volatile memory settings such as the following:
 
 `#define CONFIG_ENV_IS_IN_MMC`
 
@@ -96,14 +96,14 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
 
 `#define CONFIG_ENV_IS_IN_UBI`
 
-**検討事項 (免責: 以下のリストは完全なものではありません):**
+**Considerations (Disclaimer: The List below is non-exhaustive):**
 
-* SSH などのサービスにセキュアなパスワードが作成されていることを確認します。
-* perl, python, lua など未使用の言語インタプリタを削除します。
-* 未使用ライブラリ関数からデッドコードを削除します。
-* ash, dash, zsh などの未使用のシェルインタプリタを削除します。
-  * `/etc/shell` をレビューします。
-* 旧来のセキュアではないデーモンを削除します。以下を含みますがこれに限定されません。
+* Ensure services such as SSH have a secure password created.
+* Remove unused language interpreters such as: perl, python, lua.
+* Remove dead code from unused library functions.
+* Remove unused shell interpreters such as: ash, dash, zsh.
+  * Review `/etc/shell`
+* Remove legacy insecure daemons which includes but not limited to:
   * telnetd
   * ftpd
   * ftpget
@@ -121,61 +121,61 @@ U-Boot 2013.07 以降のバージョンでは "Verified Boot" (セキュアブ�
   * rquotad
   * rstatd
   * nfs
-* 以下のような未使用／不要なユーティリティを削除します。
+*   Remove unused/unnecessary utilities such as:
 
-  * sed, wget, curl, awk, cut, df, dmesg, echo, fdisk, grep, mkdir, mount (vfat), printf, tail, tee, test (directory), test (file), head, cat
+    * sed, wget, curl, awk, cut, df, dmesg, echo, fdisk, grep, mkdir, mount (vfat), printf, tail, tee, test (directory), test (file), head, cat
 
-  [Automotive Grade Linux (AGL)](http://docs.automotivelinux.org/docs/architecture/en/dev/reference/security/07-system-hardening.html#removal-or-non-inclusion-of-utilities) はデバック環境または製品環境 (ビルド) での一般的なユーティリティとその使用法のサンプル表を開発しました。
+    [Automotive Grade Linux (AGL) has developed an example table](http://docs.automotivelinux.org/docs/architecture/en/dev/reference/security/07-system-hardening.html#removal-or-non-inclusion-of-utilities) of common utilities and their usage for debug or production environments (builds).
 
-| ユーティリティ名 | 場所 | デバッグ環境 | 製品環境 |
-| :--- | :--- | :--- | :--- |
-| Strace | /bin/trace | INCLUDE | EXCLUDE |
-| Klogd | /sbin/klogd | INCLUDE | EXCLUDE |
-| Syslogd\(logger\) | /bin/logger | INCLUDE | EXCLUDE |
-| Gdbserver | /bin/gdbserver | INCLUDE | EXCLUDE |
-| Dropbear | Remove “dropbear” from ‘/etc/init.d/rcs’ | EXCLUDE | EXCLUDE |
-| SSH | NA | INCLUDE | EXCLUDE |
-| Editors \(vi\) | /bin/vi | INCLUDE | EXCLUDE |
-| Dmesg | /bin/dmesg | INCLUDE | EXCLUDE |
-| UART | /proc/tty/driver/ | INCLUDE | EXCLUDE |
-| Hexdump | /bin/hexdump | INCLUDE | EXCLUDE |
-| Dnsdomainname | /bin/dnsdomainname | EXCLUDE | EXCLUDE |
-| Hostname | /bin/hostname | INCLUDE | EXCLUDE |
-| Pmap | /bin/pmap | INCLUDE | EXCLUDE |
-| su | /bin/su | INCLUDE | EXCLUDE |
-| Which | /bin/which | INCLUDE | EXCLUDE |
-| Who and whoami | /bin/whoami | INCLUDE | EXCLUDE |
-| ps | /bin/ps | INCLUDE | EXCLUDE |
-| lsmod | /sbin/lsmod | INCLUDE | EXCLUDE |
-| install | /bin/install | INCLUDE | EXCLUDE |
-| logger | /bin/logger | INCLUDE | EXCLUDE |
-| ps | /bin/ps | INCLUDE | EXCLUDE |
-| rpm | /bin/rpm | INCLUDE | EXCLUDE |
-| Iostat | /bin/iostat | INCLUDE | EXCLUDE |
-| find | /bin/find | INCLUDE | EXCLUDE |
-| Chgrp | /bin/chgrp | INCLUDE | EXCLUDE |
-| Chmod | /bin/chmod | INCLUDE | EXCLUDE |
-| Chown | /bin/chown | INCLUDE | EXCLUDE |
-| killall | /bin/killall | INCLUDE | EXCLUDE |
-| top | /bin/top | INCLUDE | EXCLUDE |
-| stbhotplug | /sbin/stbhotplug | INCLUDE | EXCLUDE |
+| Utility Name    | Location                                 | Debug Environment | Production Environment |
+| --------------- | ---------------------------------------- | ----------------- | ---------------------- |
+| Strace          | /bin/trace                               | INCLUDE           | EXCLUDE                |
+| Klogd           | /sbin/klogd                              | INCLUDE           | EXCLUDE                |
+| Syslogd(logger) | /bin/logger                              | INCLUDE           | EXCLUDE                |
+| Gdbserver       | /bin/gdbserver                           | INCLUDE           | EXCLUDE                |
+| Dropbear        | Remove “dropbear” from ‘/etc/init.d/rcs’ | EXCLUDE           | EXCLUDE                |
+| SSH             | NA                                       | INCLUDE           | EXCLUDE                |
+| Editors (vi)    | /bin/vi                                  | INCLUDE           | EXCLUDE                |
+| Dmesg           | /bin/dmesg                               | INCLUDE           | EXCLUDE                |
+| UART            | /proc/tty/driver/                        | INCLUDE           | EXCLUDE                |
+| Hexdump         | /bin/hexdump                             | INCLUDE           | EXCLUDE                |
+| Dnsdomainname   | /bin/dnsdomainname                       | EXCLUDE           | EXCLUDE                |
+| Hostname        | /bin/hostname                            | INCLUDE           | EXCLUDE                |
+| Pmap            | /bin/pmap                                | INCLUDE           | EXCLUDE                |
+| su              | /bin/su                                  | INCLUDE           | EXCLUDE                |
+| Which           | /bin/which                               | INCLUDE           | EXCLUDE                |
+| Who and whoami  | /bin/whoami                              | INCLUDE           | EXCLUDE                |
+| ps              | /bin/ps                                  | INCLUDE           | EXCLUDE                |
+| lsmod           | /sbin/lsmod                              | INCLUDE           | EXCLUDE                |
+| install         | /bin/install                             | INCLUDE           | EXCLUDE                |
+| logger          | /bin/logger                              | INCLUDE           | EXCLUDE                |
+| ps              | /bin/ps                                  | INCLUDE           | EXCLUDE                |
+| rpm             | /bin/rpm                                 | INCLUDE           | EXCLUDE                |
+| Iostat          | /bin/iostat                              | INCLUDE           | EXCLUDE                |
+| find            | /bin/find                                | INCLUDE           | EXCLUDE                |
+| Chgrp           | /bin/chgrp                               | INCLUDE           | EXCLUDE                |
+| Chmod           | /bin/chmod                               | INCLUDE           | EXCLUDE                |
+| Chown           | /bin/chown                               | INCLUDE           | EXCLUDE                |
+| killall         | /bin/killall                             | INCLUDE           | EXCLUDE                |
+| top             | /bin/top                                 | INCLUDE           | EXCLUDE                |
+| stbhotplug      | /sbin/stbhotplug                         | INCLUDE           | EXCLUDE                |
 
-* 監査や提案を強化するために [Lynis](https://raw.githubusercontent.com/CISOfy/lynis/master/lynis) などのツールを利用します。 `wget --no-check-certificate https://github.com/CISOfy/lynis/archive/master.zip && unzip master.zip && cd lynis-master/ && bash lynis audit system`
-  * `/var/log/lynis.log` のレポートをレビューします。
-* 組込みデバイスで実行されているソフトウェアについて、開発者および関係者との間で繰り返し脅威モデル演習を実行します。
+* Utilize tools such as [Lynis](https://raw.githubusercontent.com/CISOfy/lynis/master/lynis) for hardening auditing and suggestions. `wget --no-check-certificate https://github.com/CISOfy/lynis/archive/master.zip && unzip master.zip && cd lynis-master/ && bash lynis audit system`
+  * Review the report in: `/var/log/lynis.log`
+* Perform iterative threat model exercises with developers as well as relative stakeholders on software running on the embedded device.
 
-## その他の参考情報 <a id="additional-references"></a>
+## Additional References <a href="#additional-references" id="additional-references"></a>
 
-* [https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening](https://www.owasp.org/index.php/C-Based_Toolchain_Hardening)
+* [https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening](https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening)
 * [https://www.bulkorder.ftc.gov/system/files/publications/pdf0199-carefulconnections-buildingsecurityinternetofthings.pdf](https://www.bulkorder.ftc.gov/system/files/publications/pdf0199-carefulconnections-buildingsecurityinternetofthings.pdf)
 * [http://isa99.isa.org/Public/Documents/ISA-62443-4-1-WD.pdf](http://isa99.isa.org/Public/Documents/ISA-62443-4-1-WD.pdf) (page 34-38)
-* [https://events.linuxfoundation.org/sites/events/files/slides/belloni-petazzoni-buildroot-oe\_0.pdf](https://events.linuxfoundation.org/sites/events/files/slides/belloni-petazzoni-buildroot-oe_0.pdf) - Details on buildroot and yocto
+* [https://events.linuxfoundation.org/sites/events/files/slides/belloni-petazzoni-buildroot-oe\_0.pdf](https://events.linuxfoundation.org/sites/events/files/slides/belloni-petazzoni-buildroot-oe\_0.pdf) - Details on buildroot and yocto
 * [http://elinux.org/Toolchains](http://elinux.org/Toolchains)
 * [https://download.pureftpd.org/pub/pure-ftpd/doc/README.TLS](https://download.pureftpd.org/pub/pure-ftpd/doc/README.TLS)
 * [http://www.proftpd.org/docs/howto/TLS.html](http://www.proftpd.org/docs/howto/TLS.html)
-* [https://www.owasp.org/index.php/Application\_Threat\_Modeling](https://www.owasp.org/index.php/Application_Threat_Modeling)
-* [GNU C Library Vulnerability in Industrial Products](http://www.siemens.com/cert/pool/cert/siemens_security_advisory_ssa-301706.pdf)
+* [https://www.owasp.org/index.php/Application\_Threat\_Modeling](https://www.owasp.org/index.php/Application\_Threat\_Modeling)
+* [GNU C Library Vulnerability in Industrial Products](http://www.siemens.com/cert/pool/cert/siemens\_security\_advisory\_ssa-301706.pdf)
 * [Linux Exploit Quick Listing](http://www.kmbl.us/les/working.php)
 * [Hardened U-boot](http://docs.automotivelinux.org/docs/architecture/en/dev/reference/security/07-system-hardening.html#hardened-boot)
   * [Verified boot](https://lwn.net/Articles/571031/)
-* [Improving Your Embedded Linux Security Posture with Yocto](https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/2018/improving-embedded-linux-security-yocto3.pdf)
+* [Improving Your Embedded Linux Security Posture with Yocto](https://research.nccgroup.com/2018/08/27/improving-your-embedded-linux-security-posture-with-yocto/)
