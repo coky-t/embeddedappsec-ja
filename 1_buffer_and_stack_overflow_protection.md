@@ -4,13 +4,13 @@
 
 **ソースコードの脆弱な C 関数を見つけます。例： "C" リポジトリ内で下記の "find" コマンドを使用して、ソースコードの "strncpy" や "strlen" などの脆弱な C 関数を見つけます。**
 
-```text
+```
 find . -type f -name '*.c' -print0|xargs -0 grep -e 'strncpy.*strlen'|wc -l
 ```
 
 **また grep 式は以下の式のように利用できます。**
 
-```text
+```
 $ grep -E '(strcpy|strcat|strncat|sprintf|strlen|memcpy|fopen|gets)' fuzzgoat.c
    memcpy (&state.settings, settings, sizeof (json_settings));
             {  sprintf (error, "Unexpected EOF in string (at %d:%d)", line_and_col);
@@ -40,7 +40,7 @@ $ grep -E '(strcpy|strcat|strncat|sprintf|strlen|memcpy|fopen|gets)' fuzzgoat.c
 
 **以下に、C ソースコードに対して実行した flawfinder の出力例を示します。**
 
-```text
+```
 $ flawfinder fuzzgoat.c 
 Flawfinder version 1.31, (C) 2001-2014 David A. Wheeler.
 Number of rules (primarily dangerous function names) in C/C++ ruleset: 169
@@ -169,16 +169,16 @@ strncat( buffer, SOME_DATA, strlen( SOME_DATA ));
 * 安全な同等物がない関数は書き直して安全なチェックを実装する必要があります。
 * FreeRTOS OS を利用する場合は、開発およびテストフェーズではフック関数で "configCHECK_FOR_STACK_OVERFLOW" に "1" を設定し、製品ビルドでは削除することを検討します。
 
-## その他の参考情報 <a id="additional-references"></a>
+## その他の参考情報 <a href="#additional-references" id="additional-references"></a>
 
 * OSS (オープンソースソフトウェア) 静的解析ツール
   * C 用 [flawfinder](http://www.dwheeler.com/flawfinder/) および [PMD](https://pmd.github.io/) の使用
-  * [C++](https://github.com/struct/mms/blob/master/Modern_Memory_Safety_In_C_CPP.pdf) 用 [cppcheck](http://cppcheck.sourceforge.net/) の使用
+  * [C++](https://github.com/struct/mms/blob/master/Modern\_Memory\_Safety\_In\_C\_CPP.pdf) 用 [cppcheck](http://cppcheck.sourceforge.net/) の使用
   * Clang Static Analysis を使用した C, C++, iOS 用の [Codechecker](https://github.com/Ericsson/codechecker) および [Infer](https://fbinfer.com/) の検討
 * [http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/library-c.html](http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/library-c.html)
-* [https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening\#GCC.2FBinutils](https://www.owasp.org/index.php/C-Based_Toolchain_Hardening#GCC.2FBinutils)
-* [https://www.owasp.org/index.php/Buffer\_overflow\_attack](https://www.owasp.org/index.php/Buffer_overflow_attack)
-* [https://www.owasp.org/images/2/2e/OWASP\_Code\_Review\_Guide-V1\_1.pdf](https://www.owasp.org/images/2/2e/OWASP_Code_Review_Guide-V1_1.pdf) (Page 113-114)
+* [https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening\#GCC.2FBinutils](https://www.owasp.org/index.php/C-Based\_Toolchain\_Hardening#GCC.2FBinutils)
+* [https://www.owasp.org/index.php/Buffer\_overflow\_attack](https://www.owasp.org/index.php/Buffer\_overflow\_attack)
+* [https://www.owasp.org/images/2/2e/OWASP\_Code\_Review\_Guide-V1\_1.pdf](https://www.owasp.org/images/2/2e/OWASP\_Code\_Review\_Guide-V1\_1.pdf) (Page 113-114)
 * [University of Pittsburgh - Secure Coding C/C++: String Vulnerabilities (PDF)](http://www.sis.pitt.edu/jjoshi/courses/IS2620/Spring07/Lecture3.pdf)
 * [Intel Open Source Technology Center SDL Banned Functions](https://github.com/01org/safestringlib/wiki/SDL-List-of-Banned-Functions)
 * [RTOS Stack Overflow Checking](http://www.freertos.org/Stacks-and-stack-overflow-checking.html)
