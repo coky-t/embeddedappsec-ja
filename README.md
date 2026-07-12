@@ -2,7 +2,7 @@
 
 This is the unofficial Japanese translation of the [Embedded Application Security Best Practices](https://github.com/scriptingxss/embeddedappsec).
 
-- Document Site - <https://coky-t.gitbook.io/embeddedappsec-ja/>
+<!-- - Document Site - <https://coky-t.gitbook.io/embeddedappsec-ja/> -->
 - Document Repository - <https://github.com/coky-t/embeddedappsec-ja>
 
 ### Originator
@@ -36,5 +36,5 @@ This is the unofficial Japanese translation of the [Embedded Application Securit
 
 [Koki Takeyama](https://github.com/coky-t)
 
-- Document Site - <https://coky-t.gitbook.io/owasp-docs-ja/>
+<!-- - Document Site - <https://coky-t.gitbook.io/owasp-docs-ja/> -->
 - Document Repository - <https://github.com/coky-t/owasp-docs-ja>
